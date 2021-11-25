@@ -5,7 +5,7 @@ services:
     image: ${DOCKER_REGISTRY-}tictactoeapi
     container_name: "tictactoe.api"
     build:
-      context: .
+      context: ./TicTacToe.Api
       dockerfile: TicTacToe.Api/Dockerfile
     ports:
       - "33000:80"
@@ -26,10 +26,6 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    #environment:
-      #- POSTGRES_USER=dbuser
-      #- POSTGRES_DB=tictactoe
-      #- POSTGRES_PASSWORD=password
     volumes:
       - tictactoe-db:/var/lib/postgresql/data
     ports:
