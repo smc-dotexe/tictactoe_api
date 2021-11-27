@@ -12,7 +12,7 @@ services:
       - "33001:443"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=tictactoe.db;Database=${POSTGRES_DB};User Id=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};
+      - ConnectionStrings__DefaultConnection=Server=tictactoe.db;Database=${POSTGRES_DB};User Id=${POSTGRES_DB};Password=${POSTGRES_PASSWORD} ;
     volumes:
       - .:/user/src/app
     depends_on:
@@ -25,11 +25,11 @@ services:
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}    
     volumes:
       - tictactoe-db:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "33015:5432"
 
 volumes:
   tictactoe-db:

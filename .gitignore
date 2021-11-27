@@ -12,6 +12,7 @@ project.lock.json
 *.userosscache
 *.sln.docstates
 *.env
+*usersecrets.txt
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/

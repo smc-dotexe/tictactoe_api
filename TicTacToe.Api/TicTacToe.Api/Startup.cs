@@ -8,8 +8,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using TicTacToe.App;
@@ -28,9 +31,15 @@ namespace TicTacToe.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var strBuilder = new DbConnectionStringBuilder();
+            strBuilder.ConnectionString = "Host=local; Port=33015;";
+            strBuilder.Add("Database", Configuration["DbName"]);
+            strBuilder.Add("User Id", Configuration["UserId"]);
+            strBuilder.Add("Password", Configuration["DbPassword"]);
+
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
+                options.UseNpgsql(strBuilder.ConnectionString,
                 b =>
                 {
                     b.MigrationsAssembly("TicTacToe.App");
