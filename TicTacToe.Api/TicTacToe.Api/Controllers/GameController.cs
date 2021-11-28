@@ -18,7 +18,22 @@ namespace TicTacToe.Api.Controllers
         {
             _gameRepository = gameRepository;
         }
-
+        
+        /// <summary>
+        /// Generates a new game with two players
+        /// </summary>
+        /// <param name="startGame"></param>
+        /// <returns>Game Id and both Player Ids</returns>
+        /// <remarks>
+        /// Sample Request:
+        ///     POST
+        ///     {
+        ///         "playerOneName": "sample name",
+        ///         "playerTwoName": "sample name2"
+        ///     }
+        /// </remarks>
+        /// <response code="200">Returns the ids of the new game and players</response>
+        /// <response code="400">If player names are >= 20 characters or if the value is null</response>
         [HttpPost("newgame")]
         public async Task<ActionResult<GameViewModel>> NewGame([FromBody] NewGameViewModel startGame)
         {

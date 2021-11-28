@@ -13,7 +13,9 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using TicTacToe.App;
 using TicTacToe.App.Repositories;
@@ -51,7 +53,14 @@ namespace TicTacToe.Api
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "TicTacToe.Api", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { 
+                    Title = "TicTacToe.Api", 
+                    Version = "v1",
+                    Description = "Code challenge for Launchpad to create an API for managing TicTacToe games."
+                });
+
+                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
             });
 
             services.AddScoped<IGameRepository, GameRepository>();
