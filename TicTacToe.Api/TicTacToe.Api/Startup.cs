@@ -16,6 +16,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using TicTacToe.App;
+using TicTacToe.App.Repositories;
+using TicTacToe.App.Repositories.Interfaces;
 
 namespace TicTacToe.Api
 {
@@ -31,15 +33,11 @@ namespace TicTacToe.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var strBuilder = new DbConnectionStringBuilder();
-            strBuilder.ConnectionString = "Host=local; Port=33015;";
-            strBuilder.Add("Database", Configuration["DbName"]);
-            strBuilder.Add("User Id", Configuration["UserId"]);
-            strBuilder.Add("Password", Configuration["DbPassword"]);
+            string connectionString = Configuration.GetSection("ConnectionStrings:DefaultConnection").Value;
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseNpgsql(strBuilder.ConnectionString,
+                options.UseNpgsql(connectionString,
                 b =>
                 {
                     b.MigrationsAssembly("TicTacToe.App");
@@ -47,11 +45,16 @@ namespace TicTacToe.Api
                 options.EnableSensitiveDataLogging(true);
             }
 );
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TicTacToe.Api", Version = "v1" });
             });
+
+            services.AddScoped<IGameRepository, GameRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

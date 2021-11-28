@@ -2,17 +2,20 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TicTacToe.Models.Entities;
 
 namespace TicTacToe.App
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
 
-        //public DbSet<> Games { get; set; }
-        //public DbSet<> Players { get; set; }
+        public DbSet<Game> Games { get; set; }
+        public DbSet<Player> Players { get; set; }
+
+
 
     }
 }

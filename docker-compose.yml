@@ -12,7 +12,7 @@ services:
       - "33001:443"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=tictactoe.db;Database=${POSTGRES_DB};User Id=${POSTGRES_DB};Password=${POSTGRES_PASSWORD} ;
+      - ConnectionStrings__DefaultConnection=Server=tictactoe.db;Database=${POSTGRES_DB};User Id=${POSTGRES_USER};Password=${POSTGRES_PASSWORD} ;
     volumes:
       - .:/user/src/app
     depends_on:
