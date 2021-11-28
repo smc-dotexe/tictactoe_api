@@ -24,26 +24,39 @@ namespace TicTacToe.App.Repositories
         public async Task<GameViewModel> StartNewGame(NewGameViewModel newGame)
         {
 
-            var player1 = new Player(new PlayerViewModel() { Name = newGame.PlayerOneName, IsTurn = true });
-            _playerDbSet.Add(player1);
-            var player2= new Player(new PlayerViewModel() { Name = newGame.PlayerTwoName, IsTurn = false });
-            _playerDbSet.Add(player2);
-            var game = new Game();
-            _gameDbSet.Add(game);
-            List<Player> playerList = new List<Player>() { player1, player2 };
-            game.Players = playerList;
-            player1.Game = game;
-            player1.GameId = game.Id;
-            player2.Game = game;
-            player2.GameId = game.Id;
+            List<Player> playerList = GeneratePlayers(newGame);
 
-            var generatedGame = new GameViewModel(game,player1, player2);
+            var generatedGame = GenerateGame(playerList);
 
             await _dbContext.SaveChangesAsync();
 
             return generatedGame;
+        }
 
+        private List<Player> GeneratePlayers(NewGameViewModel players)
+        {
+            var player1 = new Player(new PlayerViewModel() { Name = players.PlayerOneName, IsTurn = true });
+            _playerDbSet.Add(player1);
+            var player2 = new Player(new PlayerViewModel() { Name = players.PlayerTwoName, IsTurn = false });
+            _playerDbSet.Add(player2);
 
+            return new List<Player>() { player1, player2 };
+        }
+
+        private GameViewModel GenerateGame(List<Player> playerList)
+        {
+            var game = new Game();
+            _gameDbSet.Add(game);
+
+            game.Players = playerList;
+
+            foreach (var player in playerList)
+            {
+                player.Game = game;
+                player.GameId = game.Id;
+            }
+
+            return new GameViewModel(game, playerList[0], playerList[1]);
         }
     }
 }
