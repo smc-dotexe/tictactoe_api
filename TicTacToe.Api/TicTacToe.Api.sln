@@ -14,7 +14,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicTacToe.App", "..\TicTacT
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "..\docker-compose.dcproj", "{0883DAA8-CB1D-432E-8503-91ABC4F2B0A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacToe.Models", "..\TicTacToe.Models\TicTacToe.Models.csproj", "{9C60779E-53B3-4A13-916D-B0C11D22ADBA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicTacToe.Models", "..\TicTacToe.Models\TicTacToe.Models.csproj", "{9C60779E-53B3-4A13-916D-B0C11D22ADBA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacToe.Tests", "..\TicTacToe.Tests\TicTacToe.Tests.csproj", "{11737F8A-4089-432D-95C1-C5F98C653FFD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,6 +40,10 @@ Global
 		{9C60779E-53B3-4A13-916D-B0C11D22ADBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C60779E-53B3-4A13-916D-B0C11D22ADBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C60779E-53B3-4A13-916D-B0C11D22ADBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11737F8A-4089-432D-95C1-C5F98C653FFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11737F8A-4089-432D-95C1-C5F98C653FFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11737F8A-4089-432D-95C1-C5F98C653FFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11737F8A-4089-432D-95C1-C5F98C653FFD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

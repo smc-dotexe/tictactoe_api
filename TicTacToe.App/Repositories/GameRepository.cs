@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using TicTacToe.App.Repositories.Interfaces;
@@ -42,6 +43,7 @@ namespace TicTacToe.App.Repositories
             return new List<Player>() { player1, player2 };
         }
 
+        
         private GameViewModel GenerateGame(List<Player> playerList)
         {
             var game = new Game();
