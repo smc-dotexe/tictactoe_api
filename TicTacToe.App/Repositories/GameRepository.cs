@@ -23,10 +23,9 @@ namespace TicTacToe.App.Repositories
         }
         public async Task<GameViewModel> StartNewGame(NewGameViewModel newGame)
         {
-
             List<Player> playerList = GeneratePlayers(newGame);
 
-            var generatedGame = GenerateGame(playerList);
+            GameViewModel generatedGame = GenerateGame(playerList);
 
             await _dbContext.SaveChangesAsync();
 

@@ -22,9 +22,10 @@ namespace TicTacToe.Api.Controllers
         [HttpPost("newgame")]
         public async Task<ActionResult<GameViewModel>> NewGame([FromBody] NewGameViewModel startGame)
         {
-            Console.WriteLine("FROM BODY " + startGame);
+            if (!ModelState.IsValid)
+                return BadRequest();
+
             var gameStarted = await _gameRepository.StartNewGame(startGame);
-            Console.WriteLine("GAMESTARTED = " + gameStarted);
             return Ok(gameStarted);
         }
     }

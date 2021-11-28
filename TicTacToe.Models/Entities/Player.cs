@@ -17,6 +17,7 @@ namespace TicTacToe.Models.Entities
         }
 
         [Required]
+        [StringLength(20, ErrorMessage = "Name length must be less than 20 characters")]
         public string Name { get; set; } 
         [Required]
         public bool IsTurn { get; set; }

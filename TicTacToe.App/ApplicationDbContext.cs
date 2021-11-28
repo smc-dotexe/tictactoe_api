@@ -8,9 +8,7 @@ namespace TicTacToe.App
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
-        }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<Game> Games { get; set; }
         public DbSet<Player> Players { get; set; }
