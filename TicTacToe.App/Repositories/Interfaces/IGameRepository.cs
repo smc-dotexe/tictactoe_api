@@ -10,5 +10,6 @@ namespace TicTacToe.App.Repositories.Interfaces
     public interface IGameRepository
     {
         Task<GameViewModel> StartNewGame(NewGameViewModel newGame);
+        Task<GameBoardViewModel> PlaceMove(MoveInputViewModel playerMove);
     }
 }

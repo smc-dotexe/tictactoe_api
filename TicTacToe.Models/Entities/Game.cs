@@ -12,7 +12,7 @@ namespace TicTacToe.Models.Entities
         {
             MoveCount = 0;
             MovesLeft = 9;
-            GameBoard = new List<string>() { "0", "1", "2", "3", "4", "5", "6", "7", "8" };
+            GameBoard = new bool?[3, 3];
             IsCompleted = false;
         }
 
@@ -21,7 +21,7 @@ namespace TicTacToe.Models.Entities
         [Required]
         public int MovesLeft { get; set; }
         [Required]
-        public List<string> GameBoard { get; set; }
+        public bool?[,] GameBoard { get; set; }
 
         public List<Player> Players { get; set; }
         public bool IsCompleted { get; set; }

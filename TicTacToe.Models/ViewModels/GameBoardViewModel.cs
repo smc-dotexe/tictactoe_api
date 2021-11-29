@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace TicTacToe.Models.ViewModels
 {
-    public class PlayerViewModel
+    public class GameBoardViewModel
     {
+        public int[,] GameBoard { get; set; }
         public Guid PlayerId { get; set; }
-        public string Name { get; set; }
-        public bool IsTurn { get; set; }
-        public bool IsFirst { get; set; }
+
     }
 }

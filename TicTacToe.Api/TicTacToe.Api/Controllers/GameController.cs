@@ -43,5 +43,15 @@ namespace TicTacToe.Api.Controllers
             var gameStarted = await _gameRepository.StartNewGame(startGame);
             return Ok(gameStarted);
         }
+
+        [HttpPost("move")]
+        public async Task<ActionResult<GameBoardViewModel>> MoveInput(MoveInputViewModel playerMove)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var result = await _gameRepository.PlaceMove(playerMove);
+            return null;
+        }
     }
 }
