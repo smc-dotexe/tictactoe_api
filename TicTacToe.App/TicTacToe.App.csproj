@@ -22,8 +22,4 @@
     <ProjectReference Include="..\TicTacToe.Models\TicTacToe.Models.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
 </Project>

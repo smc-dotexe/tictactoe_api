@@ -14,7 +14,7 @@ namespace TicTacToe.Models.Entities
         {
             Name = src.Name;
             IsTurn = src.IsTurn;
-            IsFirst = src.IsFirst;
+            IsX = src.IsX;
         }
 
         [Required]
@@ -23,7 +23,7 @@ namespace TicTacToe.Models.Entities
         [Required]
         public bool IsTurn { get; set; }
         [Required]
-        public bool IsFirst { get; set; }
+        public bool IsX { get; set; }
         public Guid GameId { get; set; }
         public Game Game { get; set; }
 

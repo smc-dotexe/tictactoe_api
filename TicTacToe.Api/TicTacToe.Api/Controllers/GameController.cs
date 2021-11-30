@@ -51,7 +51,7 @@ namespace TicTacToe.Api.Controllers
                 return BadRequest();
 
             var result = await _gameRepository.PlaceMove(playerMove);
-            return null;
+            return Ok(result);
         }
     }
 }

@@ -11,6 +11,6 @@ namespace TicTacToe.Models.ViewModels
         public Guid PlayerId { get; set; }
         public string Name { get; set; }
         public bool IsTurn { get; set; }
-        public bool IsFirst { get; set; }
+        public bool IsX { get; set; }
     }
 }
