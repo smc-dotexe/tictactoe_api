@@ -43,6 +43,21 @@ namespace TicTacToe.App.Migrations
                     b.ToTable("Games");
                 });
 
+            modelBuilder.Entity("TicTacToe.Models.Entities.GamePlayer", b =>
+                {
+                    b.Property<Guid>("GameId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("PlayerId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("GameId", "PlayerId");
+
+                    b.HasIndex("PlayerId");
+
+                    b.ToTable("GamePlayer");
+                });
+
             modelBuilder.Entity("TicTacToe.Models.Entities.Player", b =>
                 {
                     b.Property<Guid>("Id")
@@ -70,6 +85,25 @@ namespace TicTacToe.App.Migrations
                     b.ToTable("Players");
                 });
 
+            modelBuilder.Entity("TicTacToe.Models.Entities.GamePlayer", b =>
+                {
+                    b.HasOne("TicTacToe.Models.Entities.Game", "Game")
+                        .WithMany("GamePlayer")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TicTacToe.Models.Entities.Player", "Player")
+                        .WithMany("GamePlayer")
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Game");
+
+                    b.Navigation("Player");
+                });
+
             modelBuilder.Entity("TicTacToe.Models.Entities.Player", b =>
                 {
                     b.HasOne("TicTacToe.Models.Entities.Game", "Game")
@@ -83,7 +117,14 @@ namespace TicTacToe.App.Migrations
 
             modelBuilder.Entity("TicTacToe.Models.Entities.Game", b =>
                 {
+                    b.Navigation("GamePlayer");
+
                     b.Navigation("Players");
+                });
+
+            modelBuilder.Entity("TicTacToe.Models.Entities.Player", b =>
+                {
+                    b.Navigation("GamePlayer");
                 });
 #pragma warning restore 612, 618
         }

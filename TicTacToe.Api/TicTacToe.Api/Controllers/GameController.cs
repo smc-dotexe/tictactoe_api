@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using TicTacToe.App.Repositories.Interfaces;
+using TicTacToe.App.Services.Interfaces;
 using TicTacToe.Models.ViewModels;
 
 namespace TicTacToe.Api.Controllers
@@ -12,11 +9,11 @@ namespace TicTacToe.Api.Controllers
     [ApiController]
     public class GameController : ControllerBase
     {
-        private readonly IGameRepository _gameRepository;
+        private readonly IGameServices _gameServices;
 
-        public GameController(IGameRepository gameRepository)
+        public GameController(IGameServices gameServices)
         {
-            _gameRepository = gameRepository;
+            _gameServices = gameServices;
         }
         
         /// <summary>
@@ -40,18 +37,18 @@ namespace TicTacToe.Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var gameStarted = await _gameRepository.StartNewGame(startGame);
+            var gameStarted = await _gameServices.StartNewGame(startGame);
             return Ok(gameStarted);
         }
 
-        [HttpPost("move")]
-        public async Task<ActionResult<GameBoardViewModel>> MoveInput(MoveInputViewModel playerMove)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest();
+        //[HttpPost("move")]
+        //public async Task<ActionResult<GameBoardViewModel>> MoveInput(MoveInputViewModel playerMove)
+        //{
+        //    if (!ModelState.IsValid)
+        //        return BadRequest();
 
-            var result = await _gameRepository.PlaceMove(playerMove);
-            return Ok(result);
-        }
+        //    var result = await _gameRepository.PlaceMove(playerMove);
+        //    return Ok(result);
+        //}
     }
 }

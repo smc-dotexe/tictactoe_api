@@ -8,14 +8,12 @@ namespace TicTacToe.Models.ViewModels
 {
     public class GameBoardViewModel
     {
-        public GameBoardViewModel(bool?[,] gameBoard, Guid playerId, string visualBoard)
+        public GameBoardViewModel(bool?[,] gameBoard, Guid playerId)
         {
             GameBoard = gameBoard;
             PlayerId = playerId;
-            VisualBoard = visualBoard;
         }
         public bool?[,] GameBoard { get; set; }
         public Guid PlayerId { get; set; }
-        public string VisualBoard { get; set; }
     }
 }

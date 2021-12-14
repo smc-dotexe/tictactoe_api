@@ -7,85 +7,96 @@ using System.Text;
 using System.Threading.Tasks;
 using TicTacToe.App.Repositories.Interfaces;
 using TicTacToe.App.Services;
+using TicTacToe.Models.Dtos;
 using TicTacToe.Models.Entities;
 using TicTacToe.Models.ViewModels;
 
 namespace TicTacToe.App.Repositories
 {
-    public class GameRepository : IGameRepository
+    public class GameRepository : BaseRepository<Game, Guid, ApplicationDbContext>, IGameRepository
     {
-        private readonly ApplicationDbContext _dbContext;
-        private DbSet<Game> _gameDbSet;
-        private DbSet<Player> _playerDbSet;
-        public GameRepository(ApplicationDbContext dbContext)
+        //private readonly ApplicationDbContext _dbContext;
+        //private DbSet<Game> _gameDbSet;
+        //private DbSet<Player> _playerDbSet;
+        //private DbSet<GamePlayer> _gamePlayerDbSet;
+        public GameRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
-            _dbContext = dbContext;
-            _gameDbSet = dbContext.Set<Game>();
-            _playerDbSet = dbContext.Set<Player>();
-        }
-        public async Task<GameViewModel> StartNewGame(NewGameViewModel newGame)
-        {
-            List<Player> playerList = GeneratePlayers(newGame);
-
-            GameViewModel generatedGame = GenerateGame(playerList);
-
-            await _dbContext.SaveChangesAsync();
-
-            return generatedGame;
+            //_dbContext = dbContext;
+            //_gameDbSet = dbContext.Set<Game>();
+            //_playerDbSet = dbContext.Set<Player>();
+            //_gamePlayerDbSet = dbContext.Set<GamePlayer>();
         }
 
-        private List<Player> GeneratePlayers(NewGameViewModel players)
+        public async Task<GameDto> GetGameByPlayerId(Guid playerId)
         {
-            var player1 = new Player(new PlayerViewModel() { Name = players.PlayerOneName, IsTurn = true, IsX=true });
-            _playerDbSet.Add(player1);
-            var player2 = new Player(new PlayerViewModel() { Name = players.PlayerTwoName, IsTurn = false, IsX=false });
-            _playerDbSet.Add(player2);
+            Game game = await _entityDbSet.FirstOrDefaultAsync(g => g.Players.Any(p => p.Id == playerId));
+            Player currentPlayer = game.Players.FirstOrDefault(player => player.Id == playerId);
+            Player nextPlayer = game.Players.FirstOrDefault(player => player.Id != playerId);
 
-            return new List<Player>() { player1, player2 };
+            return new GameDto(game, currentPlayer, nextPlayer);
         }
+        //public async Task<GameViewModel> StartNewGame(NewGameViewModel newGame)
+        //{
+        //    List<Player> playerList = GeneratePlayers(newGame);
 
-        
-        private GameViewModel GenerateGame(List<Player> playerList)
-        {
-            var game = new Game();
-            _gameDbSet.Add(game);
+        //    GameViewModel generatedGame = GenerateGame(playerList);
 
-            game.Players = playerList;
+        //    await _dbContext.SaveChangesAsync();
 
-            foreach (var player in playerList)
-            {
-                player.Game = game;
-                player.GameId = game.Id;
-            }
+        //    return generatedGame;
+        //}
 
-            return new GameViewModel(game, playerList[0], playerList[1]);
-        }
+        //private List<Player> GeneratePlayers(NewGameViewModel players)
+        //{
+        //    var player1 = new Player(new PlayerViewModel() { Name = players.PlayerOneName, IsTurn = true, IsX=true });
+        //    //_playerDbSet.Add(player1);
+        //    var player2 = new Player(new PlayerViewModel() { Name = players.PlayerTwoName, IsTurn = false, IsX=false });
+        //    //_playerDbSet.Add(player2);
 
-        public async Task<GameBoardViewModel> PlaceMove(MoveInputViewModel playerMove)
-        {
-            Player player = await _playerDbSet.FindAsync(playerMove.PlayerId);
-            Game game = await _gameDbSet.FindAsync(player.GameId);
+        //    return new List<Player>() { player1, player2 };
+        //}
 
-            GameBoardValidation(player, game);
 
-            var boardService = new GameBoardService(game, playerMove.Target, player.IsX);
-            boardService.InsertMove();
-            boardService.CheckIfWin();
-            await _dbContext.SaveChangesAsync();
+        //private GameViewModel GenerateGame(List<Player> playerList)
+        //{
+        //    var game = new Game();
 
-            return new GameBoardViewModel(boardService.gameBoard, player.Id, boardService.visualBoard);
-        }
+        //    game.Players = playerList;
 
-        private void GameBoardValidation(Player player, Game game)
-        {
-            if (game.IsCompleted)
-            {
-                throw new Exception("Game is already completed. Please start a new one");
-            }
-            if (player.IsTurn)
-            {
-                throw new Exception("Move invalid: Not players turn");
-            }
-        }
+        //    foreach (var player in playerList)
+        //    {
+        //        player.Game = game;
+        //        player.GameId = game.Id;
+        //        _playerDbSet.Add(player);
+        //        game.GamePlayer.Add(new GamePlayer() { GameId = game.Id, PlayerId = player.Id, Player = player });
+        //    }
+
+        //    _gameDbSet.Add(game);
+        //    return new GameViewModel(game, playerList[0], playerList[1]);
+        //}
+
+        //public async Task<GameBoardViewModel> PlaceMove(MoveInputViewModel playerMove)
+        //{
+
+        //    Game game = await _gameDbSet.FirstOrDefaultAsync(g => g.Players.Any(p => p.Id == playerMove.PlayerId));
+
+        //    Player currentPlayer = game.Players.FirstOrDefault(player => player.Id == playerMove.PlayerId);
+        //    Player nextPlayer = game.Players.FirstOrDefault(player => player.Id != playerMove.PlayerId);
+        //    // Insure that it is the player's turn and the game is not completed
+        //    GameBoardValidation(currentPlayer, game);
+
+
+        //    var boardService = new GameBoardService(game, playerMove.Target, currentPlayer.IsX);
+        //    boardService.InsertMove();
+        //    boardService.CheckIfWin();
+
+        //    currentPlayer.IsTurn = !currentPlayer.IsTurn;
+        //    await _dbContext.SaveChangesAsync();
+
+        //    return new GameBoardViewModel(boardService.gameBoard, currentPlayer.Id, boardService.visualBoard);
+        //    //return null;
+        //}
+
+
     }
 }

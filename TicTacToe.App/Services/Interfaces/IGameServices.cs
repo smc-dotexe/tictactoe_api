@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using TicTacToe.Models.Dtos;
+using TicTacToe.Models.Entities;
+using TicTacToe.Models.ViewModels;
+
+namespace TicTacToe.App.Services.Interfaces
+{
+    public interface IGameServices
+    {
+        Task<GameViewModel> StartNewGame(NewGameViewModel newGame);
+        Task<GameViewModel> GenerateGame(List<Player> playerList);
+        public void UpdateGameInfo(GameDto game);
+    }
+}

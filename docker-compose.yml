@@ -14,7 +14,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=tictactoe.db;Database=${POSTGRES_DB};User Id=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};
     volumes:
-      - .:/user/src/app
+      - .:/usr/src/app
     depends_on:
       - "tictactoe.db"
 

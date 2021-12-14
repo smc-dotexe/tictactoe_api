@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -8,6 +9,8 @@ namespace TicTacToe.Models.Entities
 {
     public class Player : BaseEntity<Guid>
     {
+        private Game _game;
+        private ILazyLoader LazyLoader;
         public Player() : base() {}
 
         public Player(PlayerViewModel src)
@@ -15,7 +18,14 @@ namespace TicTacToe.Models.Entities
             Name = src.Name;
             IsTurn = src.IsTurn;
             IsX = src.IsX;
+            GamePlayer = new List<GamePlayer>();
         }
+
+        private Player(ILazyLoader lazyLoader)
+        {
+            LazyLoader = lazyLoader;
+        }
+
 
         [Required]
         [StringLength(20, ErrorMessage = "Name length must be less than 20 characters")]
@@ -24,8 +34,13 @@ namespace TicTacToe.Models.Entities
         public bool IsTurn { get; set; }
         [Required]
         public bool IsX { get; set; }
-        public Guid GameId { get; set; }
-        public Game Game { get; set; }
+        public virtual Guid GameId { get; set; }
+        public virtual Game Game 
+        {
+            get => LazyLoader.Load(this, ref _game);
+            set => _game = value; 
+        }
 
+        public virtual ICollection<GamePlayer> GamePlayer { get; set; }
     }
 }

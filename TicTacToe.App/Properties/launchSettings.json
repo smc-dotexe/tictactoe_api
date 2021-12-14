@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "TicTacToe.App": {
+      "commandName": "Executable"
+    },
+    "Docker": {
+      "commandName": "Project"
+    }
+  }
+}

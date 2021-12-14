@@ -5,11 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using TicTacToe.Models.Entities;
 
-namespace TicTacToe.App.Services
+namespace TicTacToe.App.Helpers
 {
-    public class GameBoardService
+    public class GameBoardHelper
     {
         public Game game;
+        public Player player;
         public bool?[,] gameBoard;
         public bool isGameOver;
         public string visualBoard;
@@ -18,14 +19,15 @@ namespace TicTacToe.App.Services
         int _col;
         bool _isX;
 
-        public GameBoardService(Game userGame, (int row, int col) userPlacement, bool isX)
+        public GameBoardHelper(Game userGame, (int row, int col) userPlacement, Player currentPlayer)
         {
             game = userGame;
+            player = currentPlayer;
             gameBoard = userGame.GameBoard;
             _dimensionLength = userGame.GameBoard.GetLength(0);
             _row = userPlacement.row;
             _col = userPlacement.col;
-            _isX = isX;
+            _isX = player.IsX;
         }
 
         public void InsertMove()
@@ -86,11 +88,12 @@ namespace TicTacToe.App.Services
             }
 
             // Check for a draw
-            if (game.MoveCount == Math.Pow(_dimensionLength, 2) -1)
+            if (game.MoveCount == Math.Pow(_dimensionLength, 2) - 1)
             {
                 isGameOver = true;
             }
 
+            PrintBoard();
             return isGameOver;
         }
 
@@ -98,16 +101,25 @@ namespace TicTacToe.App.Services
         {
             for (int r = 0; r < gameBoard.GetLength(0); r++)
             {
-                visualBoard.Concat("\n");
+                visualBoard += "\n";
                 for (int c = 0; c < gameBoard.GetLength(1); c++)
                 {
-                    visualBoard.Concat(gameBoard[r, c].ToString());
+                    visualBoard += gameBoard[r, c].ToString();
                 }
-                visualBoard.Concat("\n");
-                visualBoard.Concat("\n");
+                visualBoard += visualBoard + "\n";
+                visualBoard += visualBoard + "\n";
             }
         }
-
-
+        public void GameBoardValidation()
+        {
+            if (game.IsCompleted)
+            {
+                throw new Exception("Game is already completed. Please start a new one");
+            }
+            if (player.IsTurn)
+            {
+                throw new Exception("Move invalid: Not players turn");
+            }
+        }
     }
 }

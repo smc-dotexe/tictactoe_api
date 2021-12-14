@@ -17,9 +17,12 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using TicTacToe.Api.Middleware;
 using TicTacToe.App;
 using TicTacToe.App.Repositories;
 using TicTacToe.App.Repositories.Interfaces;
+using TicTacToe.App.Services;
+using TicTacToe.App.Services.Interfaces;
 
 namespace TicTacToe.Api
 {
@@ -64,6 +67,10 @@ namespace TicTacToe.Api
             });
 
             services.AddScoped<IGameRepository, GameRepository>();
+            services.AddScoped<IPlayerRepository, PlayerRepository>();
+            services.AddTransient<IGameServices, GameServices>();
+            services.AddTransient<IPlayerServices, PlayerServices>();
+            //services.AddScoped<IBaseRepository, BaseRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -79,6 +86,8 @@ namespace TicTacToe.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseMiddleware<GlobalExceptionHandler>();
 
             app.UseAuthorization();
 
