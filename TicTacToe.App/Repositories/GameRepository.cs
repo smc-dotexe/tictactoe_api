@@ -35,6 +35,15 @@ namespace TicTacToe.App.Repositories
 
             return new GameDto(game, currentPlayer, nextPlayer);
         }
+
+        public async Task UpdateGameAndPlayers(GameDto game)
+        {
+            _context.Update(game.CurrentPlayer);
+            _context.Update(game.NextPlayer);
+            _context.Update(game.Game);
+
+            await _context.SaveChangesAsync();
+        }
         //public async Task<GameViewModel> StartNewGame(NewGameViewModel newGame)
         //{
         //    List<Player> playerList = GeneratePlayers(newGame);

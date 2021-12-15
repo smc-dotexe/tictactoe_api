@@ -116,7 +116,7 @@ namespace TicTacToe.App.Helpers
             {
                 throw new Exception("Game is already completed. Please start a new one");
             }
-            if (player.IsTurn)
+            if (!player.IsTurn)
             {
                 throw new Exception("Move invalid: Not players turn");
             }
