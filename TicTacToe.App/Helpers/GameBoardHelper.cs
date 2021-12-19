@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TicTacToe.App.Exceptions;
 using TicTacToe.Models.Entities;
+using TicTacToe.Models.ViewModels;
 
 namespace TicTacToe.App.Helpers
 {
@@ -12,36 +14,36 @@ namespace TicTacToe.App.Helpers
         public Game game;
         public Player player;
         public bool?[,] gameBoard;
-        public bool isGameOver;
+        public bool? isGameOver = false;
         public string visualBoard;
         int _dimensionLength;
         int _row;
         int _col;
         bool _isX;
 
-        public GameBoardHelper(Game userGame, (int row, int col) userPlacement, Player currentPlayer)
+        public GameBoardHelper(Game userGame, Target userPlacement, Player currentPlayer)
         {
             game = userGame;
             player = currentPlayer;
             gameBoard = userGame.GameBoard;
             _dimensionLength = userGame.GameBoard.GetLength(0);
-            _row = userPlacement.row;
-            _col = userPlacement.col;
+            _row = userPlacement.Row;
+            _col = userPlacement.Col;
             _isX = player.IsX;
         }
 
-        public void InsertMove()
+        public bool? InsertMove()
         {
-            if (gameBoard[_row, _col] != null)
-            {
-                throw new Exception("Spot already taken");
-            }
+            GameBoardValidation();
 
             gameBoard[_row, _col] = _isX;
             game.MoveCount++;
+
+            bool? checkWin = CheckIfWin();
+            return checkWin;
         }
 
-        public bool CheckIfWin()
+        private bool? CheckIfWin()
         {
             // Checking Rows
             for (int i = 0; i < gameBoard.GetLength(0); i++)
@@ -90,36 +92,21 @@ namespace TicTacToe.App.Helpers
             // Check for a draw
             if (game.MoveCount == Math.Pow(_dimensionLength, 2) - 1)
             {
-                isGameOver = true;
+                isGameOver = null;
             }
 
-            PrintBoard();
             return isGameOver;
         }
-
-        public void PrintBoard()
+        private void GameBoardValidation()
         {
-            for (int r = 0; r < gameBoard.GetLength(0); r++)
-            {
-                visualBoard += "\n";
-                for (int c = 0; c < gameBoard.GetLength(1); c++)
-                {
-                    visualBoard += gameBoard[r, c].ToString();
-                }
-                visualBoard += visualBoard + "\n";
-                visualBoard += visualBoard + "\n";
-            }
-        }
-        public void GameBoardValidation()
-        {
+            if (gameBoard[_row, _col] != null)
+                throw new SpotTakenException("Spot already taken");
+ 
             if (game.IsCompleted)
-            {
-                throw new Exception("Game is already completed. Please start a new one");
-            }
+                throw new GameAlreadyCompletedException("Game is already completed. Please start a new one");
+
             if (!player.IsTurn)
-            {
-                throw new Exception("Move invalid: Not players turn");
-            }
+                throw new NotPlayersTurnException("Move invalid: Not players turn");
         }
     }
 }

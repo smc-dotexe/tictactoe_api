@@ -70,7 +70,6 @@ namespace TicTacToe.Api
             services.AddScoped<IPlayerRepository, PlayerRepository>();
             services.AddTransient<IGameServices, GameServices>();
             services.AddTransient<IPlayerServices, PlayerServices>();
-            //services.AddScoped<IBaseRepository, BaseRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

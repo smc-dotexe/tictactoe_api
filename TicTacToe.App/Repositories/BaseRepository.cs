@@ -58,11 +58,10 @@ namespace TicTacToe.App.Repositories
             return result;
         }
 
-        public async Task<TEntity> Update(TEntity src)
+        public async Task Update(TEntity src)
         {
             _context.Update(src);
             await _context.SaveChangesAsync();
-            return src;
         }
     }
 }

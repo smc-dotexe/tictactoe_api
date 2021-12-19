@@ -11,7 +11,7 @@ namespace TicTacToe.App.Repositories.Interfaces
         Task<TEntity> Create(TEntity src);
         Task<TEntity> Get(TPrimaryKey id);
         Task<List<TEntity>> GetAll();
-        Task<TEntity> Update(TEntity src);
+        public Task Update(TEntity src);
         Task Delete(Guid id);
     }
 }

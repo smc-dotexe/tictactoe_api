@@ -15,15 +15,14 @@ namespace TicTacToe.App.Services
 {
     public class PlayerServices : IPlayerServices
     {
-        private readonly IPlayerRepository _playerRepository;
         private readonly IGameRepository _gameRepository;
-        //private readonly IGameServices _gameServices;
-
-        public PlayerServices(IPlayerRepository playerRepository, IGameRepository gameRepository)
+        public GameBoardViewModel gameBoardVM;
+        public GameDto gameDto;
+        public GameBoardHelper boardHelper;
+        public string gameMessage;
+        public PlayerServices(IGameRepository gameRepository)
         {
-            _playerRepository = playerRepository;
             _gameRepository = gameRepository;
-            //_gameServices = gameServices;
         }
 
         public List<Player> GeneratePlayers(NewGameViewModel players)
@@ -37,32 +36,42 @@ namespace TicTacToe.App.Services
 
         public async Task<GameBoardViewModel> PlaceMove(MoveInputViewModel playerMove)
         {
-            GameBoardViewModel gameBoardVM;
-            GameDto game = await _gameRepository.GetGameByPlayerId(playerMove.PlayerId);
-            GameBoardHelper boardHelper = new GameBoardHelper(game.Game, playerMove.Target, game.CurrentPlayer);
-            string message;
+            gameDto = await _gameRepository.GetGameByPlayerId(playerMove.PlayerId);
+            boardHelper = new GameBoardHelper(gameDto.Game, playerMove.Target, gameDto.CurrentPlayer);
 
-            boardHelper.GameBoardValidation();
-            boardHelper.InsertMove();
-            bool didWin = boardHelper.CheckIfWin();
+            bool? didWin = boardHelper.InsertMove();
 
-            if (didWin)
-            { 
-                message = game.CurrentPlayer.Name + " wins!";
-                game.Game.IsCompleted = true;
-                gameBoardVM = new GameBoardViewModel(boardHelper.gameBoard, game.CurrentPlayer.Id, message);
-            }
-            else
-            {
-                game.CurrentPlayer.IsTurn = !game.CurrentPlayer.IsTurn;
-                game.NextPlayer.IsTurn = !game.NextPlayer.IsTurn;
-                message = game.CurrentPlayer.Name + "'s turn is complete, " + game.NextPlayer.Name + "'s turn next";
-                gameBoardVM = new GameBoardViewModel(boardHelper.gameBoard, game.CurrentPlayer.Id, message);
-            }
+            UpdateModelsBasedOnMovePlacement(didWin);
 
-            await _gameRepository.UpdateGameAndPlayers(game);
+            await _gameRepository.Update(gameDto.Game);
 
             return gameBoardVM;
+        }
+
+        private void UpdateModelsBasedOnMovePlacement(bool? didWin)
+        {
+            if (didWin == true)
+            {
+                gameMessage = gameDto.CurrentPlayer.Name + " wins!";
+                gameDto.Game.IsCompleted = true;
+                gameBoardVM = new GameBoardViewModel(boardHelper.gameBoard, gameDto.CurrentPlayer.Id, gameMessage);
+            }
+
+            if (didWin == false)
+            {
+                gameDto.CurrentPlayer.IsTurn = !gameDto.CurrentPlayer.IsTurn;
+                gameDto.NextPlayer.IsTurn = !gameDto.NextPlayer.IsTurn;
+
+                gameMessage = gameDto.CurrentPlayer.Name + "'s turn is complete, " + gameDto.NextPlayer.Name + "'s turn next";
+                gameBoardVM = new GameBoardViewModel(boardHelper.gameBoard, gameDto.CurrentPlayer.Id, gameMessage);
+            }
+
+            if (didWin == null)
+            {
+                gameMessage = "Game was a draw";
+                gameDto.Game.IsCompleted = true;
+                gameBoardVM = new GameBoardViewModel(boardHelper.gameBoard, gameDto.CurrentPlayer.Id, gameMessage);
+            }
         }
     }
 }

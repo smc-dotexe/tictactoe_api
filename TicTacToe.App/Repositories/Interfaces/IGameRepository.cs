@@ -12,6 +12,5 @@ namespace TicTacToe.App.Repositories.Interfaces
     public interface IGameRepository : IBaseRepository<Game, Guid>
     {
         public Task<GameDto> GetGameByPlayerId(Guid playerId);
-        public Task UpdateGameAndPlayers(GameDto game);
     }
 }

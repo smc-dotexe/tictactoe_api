@@ -10,12 +10,10 @@ namespace TicTacToe.Api.Controllers
     public class GameController : ControllerBase
     {
         private readonly IGameServices _gameServices;
-        private readonly IPlayerServices _playerServices;
 
-        public GameController(IGameServices gameServices, IPlayerServices playerServices)
+        public GameController(IGameServices gameServices)
         {
             _gameServices = gameServices;
-            _playerServices = playerServices;
         }
         
         /// <summary>
@@ -43,14 +41,5 @@ namespace TicTacToe.Api.Controllers
             return Ok(gameStarted);
         }
 
-        [HttpPost("move")]
-        public async Task<ActionResult<GameBoardViewModel>> MoveInput(MoveInputViewModel playerMove)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
-            var result = await _playerServices.PlaceMove(playerMove);
-            return Ok(result);
-        }
     }
 }

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace TicTacToe.App.Exceptions
 {
-    public class GameWinException : Exception
+    public class SpotTakenException : Exception
     {
-        public GameWinException() { }
-        public GameWinException(string message) : base(message) { }
+        public SpotTakenException() { }
+        public SpotTakenException(string message) : base(message) { }
     }
 }

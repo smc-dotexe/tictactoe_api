@@ -9,6 +9,18 @@ namespace TicTacToe.Models.ViewModels
     public class MoveInputViewModel
     {
         public Guid PlayerId { get; set; }
-        public (int row, int column) Target { get; set; }
+        public Target Target { get; set; }
+        
     }
+    public class Target
+    {
+        public Target(int row, int col)
+        {
+            Row = row;
+            Col = col;
+        }
+        public int Row { get; set; }
+        public int Col { get; set; }
+    }
+
 }

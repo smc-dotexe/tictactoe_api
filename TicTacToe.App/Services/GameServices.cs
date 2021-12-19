@@ -15,16 +15,21 @@ namespace TicTacToe.App.Services
     {
         private readonly IGameRepository _gameRepository;
         private readonly IPlayerServices _playerServices;
-        private readonly IPlayerRepository _playerRepository;
 
-        public GameServices(IGameRepository gameRepository, IPlayerServices playerServices, IPlayerRepository playerRepository)
+        public GameServices(IGameRepository gameRepository, IPlayerServices playerServices)
         {
             _gameRepository = gameRepository;
             _playerServices = playerServices;
-            _playerRepository = playerRepository;
         }
 
-        // Creates a new game with the players and saves to the database
+        public async Task<GameViewModel> StartNewGame(NewGameViewModel newGame)
+        {
+            List<Player> playerList = _playerServices.GeneratePlayers(newGame);
+            GameViewModel generatedGame = await GenerateGame(playerList);
+
+            return generatedGame;
+        }
+
         public async Task<GameViewModel> GenerateGame(List<Player> playerList)
         {
             var game = new Game
@@ -42,20 +47,6 @@ namespace TicTacToe.App.Services
             return new GameViewModel(game, playerList[0], playerList[1]);
         }
 
-        public async Task<GameViewModel> StartNewGame(NewGameViewModel newGame)
-        {
-            List<Player> playerList = _playerServices.GeneratePlayers(newGame);
-            GameViewModel generatedGame = await GenerateGame(playerList);
 
-            return generatedGame;
-        }
-
-        public async void UpdateGameInfo(GameDto game)
-        {
-            await _playerRepository.Update(game.CurrentPlayer);
-            await _playerRepository.Update(game.NextPlayer);
-            await _gameRepository.Update(game.Game);
-
-        }
     }
 }

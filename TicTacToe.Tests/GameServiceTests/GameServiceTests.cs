@@ -11,19 +11,14 @@ using Xunit;
 
 namespace TicTacToe.Tests.GameServiceTests
 {
-    public class GameServiceTests
+    public class GameServiceTests : TestDataHelpers
     {
-        private readonly NewGameViewModel _newGameVm;
-        private readonly GameViewModel _gameVm;
-        private readonly List<Player> _playerList;
-        private readonly Game _game;
-
         public GameServiceTests()
         {
-            _playerList = GeneratePlayerData();
-            _game = new Game() { Id = new Guid("8e3478f6-83c9-44e9-840f-4f3c0b6e98bb"), Players = _playerList };
-            _gameVm = new GameViewModel(_game, _playerList[0], _playerList[1]);
-            _newGameVm = new NewGameViewModel() { PlayerOneName = "FirstPlayer", PlayerTwoName = "SecondPlayer" };
+            PlayerList = GeneratePlayerData();
+            TestGame = new Game() { Id = new Guid("8e3478f6-83c9-44e9-840f-4f3c0b6e98bb"), Players = PlayerList };
+            TestGameVM = new GameViewModel(TestGame, PlayerList[0], PlayerList[1]);
+            NewGameVM = new NewGameViewModel() { PlayerOneName = "FirstPlayer", PlayerTwoName = "SecondPlayer" };
         }
 
         [Fact]
@@ -31,11 +26,11 @@ namespace TicTacToe.Tests.GameServiceTests
         {
             // Arrange 
             var mockGameService = new Mock<IGameServices>();
-            mockGameService.Setup(serv => serv.StartNewGame(_newGameVm))
-                .ReturnsAsync(_gameVm);
+            mockGameService.Setup(serv => serv.StartNewGame(NewGameVM))
+                .ReturnsAsync(TestGameVM);
 
             // Act
-            var result = await mockGameService.Object.StartNewGame(_newGameVm);
+            var result = await mockGameService.Object.StartNewGame(NewGameVM);
 
             // Assert
             Assert.NotNull(result);
@@ -43,13 +38,6 @@ namespace TicTacToe.Tests.GameServiceTests
             Assert.Equal(new Guid("8e3478f6-83c9-44e9-840f-4f3c0b6e98bb"), result.GameId);
             Assert.Equal(new Guid("b5cd2f90-2a48-4afe-b494-96d89b1ee9bb"), result.PlayerOneId);
             Assert.Equal(new Guid("6d1e3c04-3414-4286-a5c7-cdbcd5c1c75e"), result.PlayerTwoId);
-        }
-        private static List<Player> GeneratePlayerData()
-        {
-            Player playerOne = new Player() { Id = new Guid("b5cd2f90-2a48-4afe-b494-96d89b1ee9bb"), Name = "FirstPlayer", IsTurn = true };
-            Player playerTwo = new Player() { Id = new Guid("6d1e3c04-3414-4286-a5c7-cdbcd5c1c75e"), Name = "SecondPlayer", IsTurn = false };
-
-            return new List<Player>() { playerOne, playerTwo };
         }
     }
 }

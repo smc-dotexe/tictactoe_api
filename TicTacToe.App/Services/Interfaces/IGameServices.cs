@@ -13,6 +13,5 @@ namespace TicTacToe.App.Services.Interfaces
     {
         Task<GameViewModel> StartNewGame(NewGameViewModel newGame);
         Task<GameViewModel> GenerateGame(List<Player> playerList);
-        public void UpdateGameInfo(GameDto game);
     }
 }
