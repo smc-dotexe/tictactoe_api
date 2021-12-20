@@ -14,10 +14,8 @@ namespace TicTacToe.Models.Entities
         public Game() : base() 
         {
             MoveCount = 0;
-            MovesLeft = 9;
             GameBoard = new bool?[3, 3];
             IsCompleted = false;
-            GamePlayer = new List<GamePlayer>();
         }
 
         private Game(ILazyLoader lazyLoader)
@@ -27,8 +25,7 @@ namespace TicTacToe.Models.Entities
 
         [Required]
         public int MoveCount { get; set; } 
-        [Required]
-        public int MovesLeft { get; set; }
+
         [Required]
         public bool?[,] GameBoard { get; set; }
         public bool IsCompleted { get; set; }
@@ -38,8 +35,6 @@ namespace TicTacToe.Models.Entities
             get => LazyLoader.Load(this, ref _players);
             set => _players = value; 
         }
-
-        public virtual ICollection<GamePlayer> GamePlayer { get; set; }
 
     }
 }

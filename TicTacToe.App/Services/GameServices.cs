@@ -47,6 +47,28 @@ namespace TicTacToe.App.Services
             return new GameViewModel(game, playerList[0], playerList[1]);
         }
 
+        public async Task<List<ActiveGameViewModel>> GetActiveGames()
+        {
+            List<Game> currentGamesList = await _gameRepository.GetAllActiveGames();
+            if (currentGamesList.Count == 0)
+                return null;
 
+            List<ActiveGameViewModel> activeGamesListView = new List<ActiveGameViewModel>();
+
+            foreach(Game game in currentGamesList)
+            {
+                ActiveGameViewModel activeGame = new ActiveGameViewModel() 
+                { 
+                    GameId = game.Id, 
+                    MovesTaken = game.MoveCount, 
+                    PlayerOneName = game.Players.First().Name, 
+                    PlayerTwoName = game.Players.Last().Name 
+                };
+
+                activeGamesListView.Add(activeGame);
+            }
+
+            return activeGamesListView;
+        }
     }
 }

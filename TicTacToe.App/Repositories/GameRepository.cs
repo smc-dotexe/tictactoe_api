@@ -31,5 +31,12 @@ namespace TicTacToe.App.Repositories
 
             return new GameDto(game, currentPlayer, nextPlayer);
         }
+
+        public async Task<List<Game>> GetAllActiveGames()
+        {
+            List<Game> activeGamesQuery = await _context.Games.Where(g => g.IsCompleted == false).ToListAsync();
+
+            return activeGamesQuery;
+        }
     }
 }

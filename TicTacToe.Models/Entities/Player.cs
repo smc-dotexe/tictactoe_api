@@ -18,7 +18,6 @@ namespace TicTacToe.Models.Entities
             Name = src.Name;
             IsTurn = src.IsTurn;
             IsX = src.IsX;
-            GamePlayer = new List<GamePlayer>();
         }
 
         private Player(ILazyLoader lazyLoader)
@@ -41,6 +40,5 @@ namespace TicTacToe.Models.Entities
             set => _game = value; 
         }
 
-        public virtual ICollection<GamePlayer> GamePlayer { get; set; }
     }
 }
